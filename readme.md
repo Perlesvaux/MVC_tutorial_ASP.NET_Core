@@ -79,6 +79,7 @@ public String FName {get; set;}
 
 [Range(1,120, ErrorMessage="Valid ages: 1-120")]
 public int Age {get; set;}
+
 public DateTime MemberSince {get; set;} = DateTime.Now;
 }
 ```
@@ -112,8 +113,8 @@ touch Controllers/Student.cs
 ```csharp
 namespace School.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Student.Data;
-using Student.Models;
+using School.Data;
+using School.Models;
 
 public class StudentController : Controller
 {
@@ -206,6 +207,91 @@ public class StudentController : Controller
     return RedirectToAction("Index");
   }
 
+}
+```
+### 7- Time to code the **Views**:
+```bash
+mkdir -p Views/Student
+```
+There will be one view per *GET* endpoint. Four in total:
+``` bash
+touch Views/Student/Index.cshtml
+```
+```html
+@model IEnumerable<Student>
+@{
+  ViewData["Title"] = "Index";
+}
+<table class="table table-bordered table-striped table-dark" style="witdh:100%">
+  <thead>
+    <tr><th>Name</th><th>Order</th><th>Action</th></tr>
+  </thead>
+  <tbody>
+      @foreach(var obj in Model)
+      {
+      <tr>
+      <td>@obj.Name</td>
+      <td>@obj.DisplayOrder</td>
+      <td>
+          <a asp-controller="Student" asp-action="Update" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square"></i> </a>
+          <a asp-controller="Student" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash"></i> </a>
+      </td>
+      </tr>
+      }
+  </tbody>
+</table>
+```
+``` bash
+touch Views/Student/Create.cshtml
+```
+```html
+@model Student
+<form method="post" asp-controller="Student" asp-action="Create">
+      <label asp-for="FName"></label>
+      <input asp-for="FName">
+      <span asp-validation-for="FName"></span>  
+      <label asp-for="Age"></label>
+      <input asp-for="Age">
+      <span asp-validation-for="Age"></span>  
+</form>
+@section Scripts{
+@{
+<partial name="_ValidationScriptsPartial"/>
+}
+}
+```
+``` bash
+touch Views/Student/Update.cshtml
+```
+```html
+@model Student
+<form method="post" asp-controller="Student" asp-action="Update" asp-route-id="@Model.Id">
+      <label asp-for="FName"></label>
+      <input asp-for="FName">
+      <span asp-validation-for="FName"></span>  
+      <label asp-for="Age"></label>
+      <input asp-for="Age">
+      <span asp-validation-for="Age"></span>  
+</form>
+@section Scripts{
+@{
+<partial name="_ValidationScriptsPartial"/>
+}
+}
+```
+``` bash
+touch Views/Student/Delete.cshtml
+```
+```html
+@model Student
+<form method="post" asp-controller="Student" asp-action="Delete" asp-route-id="@Model.Id">
+  <input type="hidden" asp-for="FName">
+  <input type="hidden" asp-for="Age">
+</form>
+@section Scripts{
+@{
+<partial name="_ValidationScriptsPartial"/>
+}
 }
 ```
 
