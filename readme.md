@@ -83,6 +83,131 @@ public DateTime MemberSince {get; set;} = DateTime.Now;
 }
 ```
 
+### 5- Now, let's code the **connection**:
+```bash
+mkdir Data
+touch Data/Connection.cs
+```
+```csharp
+namespace School.Data;
+using Microsoft.EntityFrameworkCore;
+using School.Models;
+
+public class Connection: DbContext
+{
+  public Connection(DbContextOptions<Connection> options): base(options) {}
+
+  public DbSet<Student> Students {get; set;}
+}
+```
+### 6- Let's create and apply the **migrations**:
+```bash
+dotnet ef migrations add StudentsMigration
+dotnet ef database update
+```
+### 7- Time to code the **Controller**:
+```bash
+touch Controllers/Student.cs
+```
+```csharp
+namespace School.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using Student.Data;
+using Student.Models;
+
+public class StudentController : Controller
+{
+  private readonly Connection _db;
+
+  public StudentController(Connection db)
+  {
+    _db = db;
+  }
+
+  public IActionResult Index() //GET
+  {
+    IEnumerable<Student> allStudents = _db.Students;
+    return View(allStudents);
+  }
+
+  public IActionResult Create() //GET
+  {
+    return View();
+  }
+
+  [HttpPost]
+  [ValidateAntiForgeryToken]
+  public IActionResult Create(Student obj) //POST
+  {
+    if(ModelState.IsValid)
+    {
+      _db.Students.Add(obj);
+      _db.SaveChanges();
+      TempData["success"] = $"'{obj.Name}' entry created successfully!";
+      return RedirectToAction("Index");
+    }
+    return View(obj);
+  }
+
+  public IActionResult Update(int? id) //GET
+  {
+    if (id==null || id==0)
+    {
+      return NotFound();
+    }
+
+    Student? alumni = _db.Students.Find(id);
+    // var alumni = _db.Students.FirstOrDefault(u=>u.Id==id);
+    // var alumni = _db.Students.SingleOrDefault(u=>u.Id==id);
+    if (alumni == null)
+    {
+      return NotFound();
+    }
+    return View(alumni);
+  }
+
+  [HttpPost, ActionName("Update")]
+  [ValidateAntiForgeryToken]
+  public IActionResult Change(Category obj) //POST
+  {
+    if(ModelState.IsValid)
+    {
+      _db.Students.Update(obj);
+      _db.SaveChanges();
+      TempData["success"] = $"Updated '{obj.Name}' successfully!";
+      return RedirectToAction("Index");
+    }
+    return View(obj);
+  }
+
+  public IActionResult Delete(int? id) // GET
+  {
+    if (id == null || id == 0)
+    {
+      return NotFound();
+    }
+    var alumni = _db.Students.Find(id);
+
+    if (alumni == null)
+    {
+      return NotFound();
+    }
+
+    return View(alumni);
+  }
+
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public IActionResult Remove(Category obj) //POST
+  {
+    _db.Students.Remove(obj);
+    _db.SaveChanges();
+    TempData["success"] = $"Deleted '{obj.Name}' successfully!";
+    return RedirectToAction("Index");
+  }
+
+}
+```
 
 
 
