@@ -67,7 +67,7 @@ touch Models/Student.cs
 ```csharp
 namespace School.Models;
 using System.ComponentModel.DataAnnotations; //[Key] & [Required]
-using Component.Model; //[DisplayName] & [Range]
+using System.ComponentModel; //DisplayName and Range
 public class Student
 {
 [Key]
@@ -101,15 +101,36 @@ public class Connection: DbContext
   public DbSet<Student> Students {get; set;}
 }
 ```
-### 6- Let's create and apply the **migrations**:
+### 6- Let's edit our ***Program.cs***:
+Add these imports:
+```
+using School.Data;
+using Microsoft.EntityFrameworkCore;
+```
+Find this comment:
+```csharp
+// Add services to the container.
+```
+Append these two. The *connection to the database* and the *runtime compiler* (it helps working on the front-end without having to re-compile)
+```csharp
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+new MySqlServerVersion(new Version(8, 0, 35))));
+
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+```
+
+
+### 7- Let's create and apply the **migrations**:
 ```bash
 dotnet ef migrations add StudentsMigration
 dotnet ef database update
 ```
-### 7- Time to code the **Controller**:
+### 8- Time to code the **Controller**:
 ```bash
 touch Controllers/Student.cs
 ```
+
 ```csharp
 namespace School.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -118,6 +139,7 @@ using School.Models;
 
 public class StudentController : Controller
 {
+  // Connecting the controller to the database
   private readonly Connection _db;
 
   public StudentController(Connection db)
@@ -125,17 +147,22 @@ public class StudentController : Controller
     _db = db;
   }
 
-  public IActionResult Index() //GET
+  // GET request retrieving all students from the database
+  // and rendering them through the view "Student/Index" 
+  public IActionResult Index() 
   {
     IEnumerable<Student> allStudents = _db.Students;
     return View(allStudents);
   }
 
+  // GET request rendering the view "Student/Create"
   public IActionResult Create() //GET
   {
     return View();
   }
 
+  // POST request adding a new entry,
+  // and returning to "Index" if form data is valid
   [HttpPost]
   [ValidateAntiForgeryToken]
   public IActionResult Create(Student obj) //POST
@@ -150,7 +177,9 @@ public class StudentController : Controller
     return View(obj);
   }
 
-  public IActionResult Update(int? id) //GET
+  // GET request retrieving an entry,
+  // and rendering it through view "Student/Update"
+  public IActionResult Update(int? id)
   {
     if (id==null || id==0)
     {
@@ -158,8 +187,10 @@ public class StudentController : Controller
     }
 
     Student? alumni = _db.Students.Find(id);
+    // these are also valid:
     // var alumni = _db.Students.FirstOrDefault(u=>u.Id==id);
     // var alumni = _db.Students.SingleOrDefault(u=>u.Id==id);
+
     if (alumni == null)
     {
       return NotFound();
@@ -167,9 +198,11 @@ public class StudentController : Controller
     return View(alumni);
   }
 
-  [HttpPost, ActionName("Update")]
+  // POST request updating selected entry
+  // and returning to "Index" if form data is valid
+  [HttpPost]
   [ValidateAntiForgeryToken]
-  public IActionResult Change(Category obj) //POST
+  public IActionResult Change(Category obj) 
   {
     if(ModelState.IsValid)
     {
@@ -181,7 +214,9 @@ public class StudentController : Controller
     return View(obj);
   }
 
-  public IActionResult Delete(int? id) // GET
+  // GET request retrieving an entry,
+  // and rendering it through view "Student/Delete"
+  public IActionResult Delete(int? id) 
   {
     if (id == null || id == 0)
     {
@@ -197,6 +232,10 @@ public class StudentController : Controller
     return View(alumni);
   }
 
+  // POST request deleting selected entry
+  // and returning to "Index" if form data is valid
+  // example below showcases use-case of "ActionName" annotation.
+  // i.e.: endpoint "Remove" is overwritten as "Delete"
   [HttpPost, ActionName("Delete")]
   [ValidateAntiForgeryToken]
   public IActionResult Remove(Category obj) //POST
@@ -209,7 +248,8 @@ public class StudentController : Controller
 
 }
 ```
-### 7- Time to code the **Views**:
+The **TempData** helps us display a message right after an action is performed. We'll be using a partial view for that. See *step 10*.
+### 9- Time to code the **Views**:
 ```bash
 mkdir -p Views/Student
 ```
@@ -294,6 +334,48 @@ touch Views/Student/Delete.cshtml
 }
 }
 ```
+The **@model** directive declares the type of the model that the view expects (i.e.: from *controller*), **@Model** allows you to access properties of that model (i.e.: *@Model.Id*, *@Model.FName*, *@Model.Age*), and **@{ }** lets you write C# code directly in your Razor view.
 
+At the bottom of *Create*, *Update* & *Delete*, a "Scripts" section is created to include a partial view that performs client-side validation (this "_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
+
+### 10- Let's add *Toastr* to have good looking notifications!
+Let's create a partial view:
+```bash
+Touch Views/Shared/_Notification.cshtml
+```
+The code below checks whether there is a value stored in *TempData* with the key "success"/"error" If such a value exists, it executes JavaScript code to display a success message using the Toastr library.
+```html
+@if(TempData["success"] != null)
+{
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script>
+    toastr.success('@TempData["success"]');
+  </script>
+}
+
+@if(TempData["error"] != null)
+{
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script>
+    toastr.success('@TempData["error"]');
+  </script>
+}
+```
+Let's edit the ***Views/Shared/_Layout.cshtml***.
+Add these to the *head*:
+```html
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+```
+Find *@RenderBody()*. Above it, add this *partial* tag:
+```
+<partial name="_Notification">
+```
+Add these to *footer*:
+```html
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+```
 
 
