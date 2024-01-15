@@ -265,7 +265,9 @@ touch Views/Student/Index.cshtml
 @{
   ViewData["Title"] = "Index";
 }
-<table class="table table-bordered table-striped table-dark" style="witdh:100%">
+
+<a asp-controller="Student" asp-action="Create"><i class="bi bi-plus-square"></i>New</a>
+<table class="table table-bordered table-striped table-info" style="witdh:100%">
   <thead>
     <tr><th>Name</th><th>Order</th><th>Action</th></tr>
   </thead>
@@ -276,8 +278,8 @@ touch Views/Student/Index.cshtml
       <td>@obj.FName</td>
       <td>@obj.Age</td>
       <td>
-          <a asp-controller="Student" asp-action="Update" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square"></i> </a>
-          <a asp-controller="Student" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash"></i> </a>
+          <a asp-controller="Student" asp-action="Update" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square"></i>edit</a>
+          <a asp-controller="Student" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash"></i>delete </a>
       </td>
       </tr>
       }
@@ -297,6 +299,8 @@ touch Views/Student/Create.cshtml
       <label asp-for="Age"></label>
       <input asp-for="Age">
       <span asp-validation-for="Age"></span>  
+      <button type="submit">create</button>
+      <a asp-controller="Student" asp-action="Index">Back</a>
 </form>
 @section Scripts{
 @{
@@ -317,12 +321,15 @@ touch Views/Student/Update.cshtml
       <label asp-for="Age"></label>
       <input asp-for="Age">
       <span asp-validation-for="Age"></span>  
+      <button type="submit">update</button>
+      <a asp-controller="Student" asp-action="Index">Back</a>
 </form>
 @section Scripts{
 @{
 <partial name="_ValidationScriptsPartial"/>
 }
 }
+
 ```
 This view deletes a `Student` object that matches the "@Model.Id"
 ``` bash
@@ -333,6 +340,9 @@ touch Views/Student/Delete.cshtml
 <form method="post" asp-controller="Student" asp-action="Delete" asp-route-id="@Model.Id">
   <input type="hidden" asp-for="FName">
   <input type="hidden" asp-for="Age">
+  <span>@Model.FName will be deleted.</span>
+  <button type="submit">continue</button>
+  <a asp-controller="Student" asp-action="Index">Back</a>
 </form>
 @section Scripts{
 @{
