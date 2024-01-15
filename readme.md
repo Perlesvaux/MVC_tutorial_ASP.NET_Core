@@ -365,7 +365,7 @@ The **@model** directive declares the type of the model that the view expects (i
 
 **ViewData["Title"]** refers to a section declared in the ***Views/Shared/_Layout.cshtml***. This one in particular, displays the string passed to it as the name of the tab. 
 
-At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this "Views/Shared/_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
+At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this ***Views/Shared/_ValidationScriptsPartial*** partial-view is automatically generated when initiating the project).
 
 ### 10- Let's make it prettier!
 Let's add **[Toastr](https://github.com/CodeSeven/toastr)** to have good looking notifications!
