@@ -355,7 +355,7 @@ The **@model** directive declares the type of the model that the view expects (i
 At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this "Views/Shared/_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
 
 ### 10- Let's make it prettier!
-Let's add **Toastr** to have good looking notifications!
+Let's add **[Toastr](https://github.com/CodeSeven/toastr)** to have good looking notifications!
 First, let's create a new partial view:
 ```bash
 touch Views/Shared/_Notification.cshtml
