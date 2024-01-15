@@ -248,12 +248,14 @@ public class StudentController : Controller
 
 }
 ```
+The **ValidateAntiForgeryToken** is a security measure to prevent cross-site request forgery (CSRF) attacks.
 The **TempData** helps us display a message right after an action is performed. We'll be using a partial view for that. See *step 10*.
 ### 9- Time to code the **Views**:
 ```bash
 mkdir -p Views/Student
 ```
 There will be one view per *GET* endpoint. Four in total:
+This one below takes an ```IEnumerable<Student>``` object and renders each element inside a table row. 
 ``` bash
 touch Views/Student/Index.cshtml
 ```
@@ -281,6 +283,7 @@ touch Views/Student/Index.cshtml
   </tbody>
 </table>
 ```
+This view creates a `Student` object from form data, checks if the data is valid, and if so, inserts the entry into the database, sets a success message, and redirects to the index. Otherwise, it returns to the form with validation errors.
 ``` bash
 touch Views/Student/Create.cshtml
 ```
@@ -300,6 +303,7 @@ touch Views/Student/Create.cshtml
 }
 }
 ```
+This view creates a `Student` object from form data and checks if the data is valid. If so, the entry in the database that matches the *Id* property is overwritten. In case there's no need to update a property (i.e.: *Age*), all you need is to add a hidden input like this: `<input type="hidden" asp-for="Age">`
 ``` bash
 touch Views/Student/Update.cshtml
 ```
@@ -319,6 +323,7 @@ touch Views/Student/Update.cshtml
 }
 }
 ```
+This view deletes a `Student` object that matches the "@Model.Id"
 ``` bash
 touch Views/Student/Delete.cshtml
 ```
@@ -336,14 +341,14 @@ touch Views/Student/Delete.cshtml
 ```
 The **@model** directive declares the type of the model that the view expects (i.e.: from *controller*), **@Model** allows you to access properties of that model (i.e.: *@Model.Id*, *@Model.FName*, *@Model.Age*), and **@{ }** lets you write C# code directly in your Razor view.
 
-At the bottom of *Create*, *Update* & *Delete*, a "Scripts" section is created to include a partial view that performs client-side validation (this "_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
+At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this "Views/Shared/_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
 
 ### 10- Let's add *Toastr* to have good looking notifications!
 Let's create a partial view:
 ```bash
-Touch Views/Shared/_Notification.cshtml
+touch Views/Shared/_Notification.cshtml
 ```
-The code below checks whether there is a value stored in *TempData* with the key "success"/"error" If such a value exists, it executes JavaScript code to display a success message using the Toastr library.
+The code below checks whether there is a value stored in *TempData* with the key "success"/"error" If such a value exists, it executes JavaScript code to display a success message using the *Toastr library*.
 ```html
 @if(TempData["success"] != null)
 {
@@ -370,7 +375,7 @@ Add these to the *head*:
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 ```
 Find *@RenderBody()*. Above it, add this *partial* tag:
-```
+```html
 <partial name="_Notification">
 ```
 Add these to *footer*:
