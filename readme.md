@@ -294,6 +294,9 @@ touch Views/Student/Create.cshtml
 ```
 ```html
 @model Student
+@{
+  ViewData["Title"] = "Create";
+}
 <form method="post" asp-controller="Student" asp-action="Create">
       <label asp-for="FName"></label>
       <input asp-for="FName">
@@ -316,6 +319,9 @@ touch Views/Student/Update.cshtml
 ```
 ```html
 @model Student
+@{
+  ViewData["Title"] = "Update";
+}
 <form method="post" asp-controller="Student" asp-action="Update" asp-route-id="@Model.Id">
       <label asp-for="FName"></label>
       <input asp-for="FName">
@@ -339,6 +345,9 @@ touch Views/Student/Delete.cshtml
 ```
 ```html
 @model Student
+@{
+  ViewData["Title"] = "Delete";
+}
 <form method="post" asp-controller="Student" asp-action="Delete" asp-route-id="@Model.Id">
   <input type="hidden" asp-for="FName">
   <input type="hidden" asp-for="Age">
@@ -353,6 +362,8 @@ touch Views/Student/Delete.cshtml
 }
 ```
 The **@model** directive declares the type of the model that the view expects (i.e.: from *controller*), **@Model** allows you to access properties of that model (i.e.: *@Model.Id*, *@Model.FName*, *@Model.Age*), and **@{ }** lets you write C# code directly in your Razor view.
+
+**ViewData["Title"]** refers to a section declared in the ***Views/Shared/_Layout.cshtml***. This one in particular, displays the string passed to it as the name of the tab. 
 
 At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this "Views/Shared/_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
 
