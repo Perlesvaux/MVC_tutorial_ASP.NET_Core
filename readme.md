@@ -171,7 +171,7 @@ public class StudentController : Controller
     {
       _db.Students.Add(obj);
       _db.SaveChanges();
-      TempData["success"] = $"'{obj.Name}' entry created successfully!";
+      TempData["success"] = $"'{obj.FName}' entry created successfully!";
       return RedirectToAction("Index");
     }
     return View(obj);
@@ -202,13 +202,13 @@ public class StudentController : Controller
   // and returning to "Index" if form data is valid
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public IActionResult Update(Student obj)  
+  public IActionResult Update(Student obj) 
   {
     if(ModelState.IsValid)
     {
       _db.Students.Update(obj);
       _db.SaveChanges();
-      TempData["success"] = $"Updated '{obj.Name}' successfully!";
+      TempData["success"] = $"Updated '{obj.FName}' successfully!";
       return RedirectToAction("Index");
     }
     return View(obj);
@@ -242,11 +242,12 @@ public class StudentController : Controller
   {
     _db.Students.Remove(obj);
     _db.SaveChanges();
-    TempData["success"] = $"Deleted '{obj.Name}' successfully!";
+    TempData["success"] = $"Deleted '{obj.FName}' successfully!";
     return RedirectToAction("Index");
   }
 
 }
+
 ```
 The **ValidateAntiForgeryToken** is a security measure to prevent cross-site request forgery (CSRF) attacks.
 The **TempData** helps us display a message right after an action is performed. We'll be using a partial view for that. See *step 10*.
