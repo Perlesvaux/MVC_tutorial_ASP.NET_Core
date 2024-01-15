@@ -202,7 +202,7 @@ public class StudentController : Controller
   // and returning to "Index" if form data is valid
   [HttpPost]
   [ValidateAntiForgeryToken]
-  public IActionResult Change(Category obj) 
+  public IActionResult Update(Student obj)  
   {
     if(ModelState.IsValid)
     {
@@ -238,7 +238,7 @@ public class StudentController : Controller
   // i.e.: endpoint "Remove" is overwritten as "Delete"
   [HttpPost, ActionName("Delete")]
   [ValidateAntiForgeryToken]
-  public IActionResult Remove(Category obj) //POST
+  public IActionResult Remove(Student obj) //POST
   {
     _db.Students.Remove(obj);
     _db.SaveChanges();
