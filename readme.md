@@ -273,8 +273,8 @@ touch Views/Student/Index.cshtml
       @foreach(var obj in Model)
       {
       <tr>
-      <td>@obj.Name</td>
-      <td>@obj.DisplayOrder</td>
+      <td>@obj.FName</td>
+      <td>@obj.Age</td>
       <td>
           <a asp-controller="Student" asp-action="Update" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square"></i> </a>
           <a asp-controller="Student" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash"></i> </a>
