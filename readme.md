@@ -1,6 +1,6 @@
 # ASP.NET Core MVC Tutorial - CRUD 
 By the end of this tutorial you'll have a fully functional ***TODO List***.
-App name on this example will be **School**, modeled as a rooster of **Student** objects.
+App name on this example will be **School**, modeled as a roster of **Student** objects.
 ## *First things first...*
 ### Environment:
 ```bash
