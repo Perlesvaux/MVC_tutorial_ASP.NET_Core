@@ -35,7 +35,6 @@ GRANT CREATE, DROP, ALTER, INSERT, SELECT, UPDATE, DELETE ON databasename.* to '
 New user can now access MySQL like this:
 ```sql
 mysql -u username -p
-
 USE DATABASE databasename; 
 ```
 Or, with:
