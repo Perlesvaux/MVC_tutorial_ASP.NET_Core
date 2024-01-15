@@ -128,7 +128,7 @@ dotnet ef database update
 ```
 ### 8- Time to code the **Controller**:
 ```bash
-touch Controllers/Student.cs
+touch Controllers/StudentController.cs
 ```
 
 ```csharp
