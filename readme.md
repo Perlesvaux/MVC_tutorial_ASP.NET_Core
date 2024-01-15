@@ -1,8 +1,10 @@
 # ASP.NET Core MVC Tutorial - CRUD 
+By the end of this tutorial you'll have a fully functional ***TODO List***.
+App name on this example will be **School**, modeled as a rooster of **Student** objects.
 ## *First things first...*
 ### - Environment:
 ```bash
-neofetch               # Linux Mint 21.2 x86_64
+neofetch               # Linux Mint 21.3 x86_64
 dotnet --list-runtimes # Microsoft.AspNetCore.App 7.0.15
 dotnet --list-runtimes # Microsoft.NETCore.App 7.0.15
 mysql --version        # mysql  Ver 8.0.35-0ubuntu0.22.04.1 for Linux on x86_64 ((Ubuntu))
