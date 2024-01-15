@@ -2,14 +2,14 @@
 By the end of this tutorial you'll have a fully functional ***TODO List***.
 App name on this example will be **School**, modeled as a rooster of **Student** objects.
 ## *First things first...*
-### - Environment:
+### Environment:
 ```bash
 neofetch               # Linux Mint 21.3 x86_64
 dotnet --list-runtimes # Microsoft.AspNetCore.App 7.0.15
 dotnet --list-runtimes # Microsoft.NETCore.App 7.0.15
 mysql --version        # mysql  Ver 8.0.35-0ubuntu0.22.04.1 for Linux on x86_64 ((Ubuntu))
 ```
-### - Install the **.NET Software Development Kit** & **Entity Framework Core tools**:
+### Install the **.NET Software Development Kit** & **Entity Framework Core tools**:
 ```bash
 apt install dotnet-host-7.0
 apt install dotnet-sdk-7.0
@@ -17,7 +17,7 @@ dotnet tool install -g dotnet-ef  # dotnet ef --version
 # dotnet tool update -g dotnet-ef --version 7.0.2
 
 ```
-### - Setup **database**:
+### Setup **database**:
 For most use-cases, an empty database & a single user with enough privileges will be enough.
 - Installation
 ```bash
@@ -33,13 +33,13 @@ CREATE USER 'username'@'localhost' IDENTIFIED BY 'enterPasswordHere';
 GRANT CREATE, DROP, ALTER, INSERT, SELECT, UPDATE, DELETE ON databasename.* to 'username'@'localhost';
 ```
 New user can now access MySQL like this:
-```
+```sql
 mysql -u username -p
 
 USE DATABASE databasename; 
 ```
 Or, with:
-```
+```sql
 mysql -h localhost -u username -p databasename
 ```
 ## *Let's start the project!*
