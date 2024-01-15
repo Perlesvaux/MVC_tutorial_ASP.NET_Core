@@ -18,14 +18,14 @@ dotnet tool install -g dotnet-ef  # dotnet ef --version
 ```
 ### Setup **database**:
 For most use-cases, an empty database & a single user with enough privileges will be enough.
-- Installation
+##### Installation
 ```bash
 sudo apt install mysql-server
 sudo mysql_secure_installation  #skip if you want
 systemctl status mysql  #if inactive, do: systemctl start mysql
 sudo mysql
 ```
-- Create database and user
+##### Create database and user
 ```sql
 CREATE DATABASE databasename;
 CREATE USER 'username'@'localhost' IDENTIFIED BY 'enterPasswordHere';
