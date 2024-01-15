@@ -354,12 +354,13 @@ The **@model** directive declares the type of the model that the view expects (i
 
 At the bottom of each form (*Create*, *Update* & *Delete*), a "Scripts" section is created to include a partial view that performs client-side validation (this "Views/Shared/_ValidationScriptsPartial" partial-view is automatically generated when initiating the project).
 
-### 10- Let's add *Toastr* to have good looking notifications!
-Let's create a partial view:
+### 10- Let's make it prettier!
+Let's add **Toastr** to have good looking notifications!
+First, let's create a new partial view:
 ```bash
 touch Views/Shared/_Notification.cshtml
 ```
-The code below checks whether there is a value stored in *TempData* with the key "success"/"error" If such a value exists, it executes JavaScript code to display a success message using the *Toastr library*.
+The code below checks whether there is a value stored in *TempData* with the key "success"/"error" If such a value exists, it executes JavaScript code to display a success message using the **Toastr** library.
 ```html
 @if(TempData["success"] != null)
 {
@@ -379,17 +380,17 @@ The code below checks whether there is a value stored in *TempData* with the key
   </script>
 }
 ```
-Let's edit the ***Views/Shared/_Layout.cshtml***.
-Add these to the *head*:
+Now let's edit the ***Views/Shared/_Layout.cshtml***:
+Add **Toastr** and **Bootstrap-icons** css-stylesheet to the *head*:
 ```html
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 ```
-Find *@RenderBody()*. Above it, add this *partial* tag:
+Find *@RenderBody()*. Right above it, add this *partial* tag:
 ```html
 <partial name="_Notification">
 ```
-Add these to *footer*:
+Finally, add **Bootstrap-icons** JavaScript to *footer*:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 ```
