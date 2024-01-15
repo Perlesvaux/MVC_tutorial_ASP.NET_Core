@@ -15,7 +15,6 @@ apt install dotnet-host-7.0
 apt install dotnet-sdk-7.0
 dotnet tool install -g dotnet-ef  # dotnet ef --version
 # dotnet tool update -g dotnet-ef --version 7.0.2
-
 ```
 ### Setup **database**:
 For most use-cases, an empty database & a single user with enough privileges will be enough.
@@ -32,6 +31,7 @@ CREATE DATABASE databasename;
 CREATE USER 'username'@'localhost' IDENTIFIED BY 'enterPasswordHere';
 GRANT CREATE, DROP, ALTER, INSERT, SELECT, UPDATE, DELETE ON databasename.* to 'username'@'localhost';
 ```
+
 New user can now access MySQL like this:
 ```sql
 mysql -u username -p
